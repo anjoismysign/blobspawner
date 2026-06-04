@@ -1,0 +1,11 @@
+name: BlobSpawner
+version: ${project.version}
+main: io.github.anjoismysign.blobspawner.BlobSpawner
+api-version: 1.17
+load: POSTWORLD
+depend:
+  - BlobLib
+authors: [ anjoismysign ]
+commands:
+  blobmob:
+    description: blobmob
