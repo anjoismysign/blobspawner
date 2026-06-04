@@ -145,7 +145,7 @@ public class BlobMobManager extends SpawnerManager implements Listener {
         if (!isLegendary) {
             return;
         }
-        BlobMobDeathEvent blobMobDeathEvent = new BlobMobDeathEvent(normal, drops);
+        BlobMobDeathEvent blobMobDeathEvent = new BlobMobDeathEvent(blobMob, drops);
         Bukkit.getPluginManager().callEvent(blobMobDeathEvent);
     }
 
