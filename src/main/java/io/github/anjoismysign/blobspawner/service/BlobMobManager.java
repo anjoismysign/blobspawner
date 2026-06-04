@@ -134,16 +134,12 @@ public class BlobMobManager extends SpawnerManager implements Listener {
             return;
         }
         @Nullable BlobMobData blobMobData = blobMob.getData();
-        @Nullable Mob mob = blobMob.getMob();
         List<ItemStack> drops = event.getDrops();
         drops.clear();
         boolean isLegendary = blobMob.isLegendary();
         String lootTable = !isLegendary ? blobMobData.defaultEntity().lootTable() : blobMobData.legendaryEntity().lootTable();
         if (!lootTable.isEmpty()) {
             drops.addAll(BlobLibLootAPI.getInstance().generateLoot(lootTable, null));
-        }
-        if (!isLegendary) {
-            return;
         }
         BlobMobDeathEvent blobMobDeathEvent = new BlobMobDeathEvent(blobMob, drops);
         Bukkit.getPluginManager().callEvent(blobMobDeathEvent);
