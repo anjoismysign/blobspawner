@@ -1,0 +1,46 @@
+# =============================================================================
+# BlobMob definition: "skeleton"
+# File path: plugins/BlobSpawner/mob/skeleton.yml
+#
+# This defines a skeleton that:
+#   - Has a 2% chance to spawn as legendary
+#   - Non-legendary skeletons do NOT follow legendaries (defaultIsFollower: false)
+#   - Uses a BetterModel for custom appearance
+#   - Legendary variant has increased attack damage and speed
+# =============================================================================
+
+type: SKELETON
+chance: 0.02
+defaultIsFollower: false
+awareDistance: 24.0
+attackDistance: 15.0
+
+defaultEntity:
+  attributes:
+    minecraft:generic.movement_speed:
+      key: "blobspawner:skeleton_speed"
+      operation: ADD_SCALAR
+      amount: 0.15
+      equipmentSlotGroup: any
+  lootTable: ""
+  model: "skeleton_archer"
+
+legendaryEntity:
+  attributes:
+    minecraft:generic.max_health:
+      key: "blobspawner:skeleton_legendary_health"
+      operation: ADD_NUMBER
+      amount: 6.0
+      equipmentSlotGroup: any
+    minecraft:generic.attack_damage:
+      key: "blobspawner:skeleton_legendary_damage"
+      operation: ADD_SCALAR
+      amount: 0.5
+      equipmentSlotGroup: any
+    minecraft:generic.movement_speed:
+      key: "blobspawner:skeleton_legendary_speed"
+      operation: ADD_SCALAR
+      amount: 0.4
+      equipmentSlotGroup: any
+  lootTable: "skeleton_legendary_loot"
+  model: "skeleton_legendary"

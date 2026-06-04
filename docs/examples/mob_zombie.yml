@@ -1,0 +1,46 @@
+# =============================================================================
+# BlobMob definition: "zombie"
+# File path: plugins/BlobSpawner/mob/zombie.yml
+#
+# This defines a zombie that:
+#   - Has a 5% chance to spawn as legendary
+#   - Non-legendary zombies follow legendary ones (defaultIsFollower: true)
+#   - Legendary zombies attack players at close range
+#   - Normal zombies get +4 max health; legendary get +10 max health
+# =============================================================================
+
+type: ZOMBIE
+chance: 0.05
+defaultIsFollower: true
+awareDistance: 16.0
+attackDistance: 2.5
+
+defaultEntity:
+  attributes:
+    minecraft:generic.max_health:
+      key: "blobspawner:zombie_health"
+      operation: ADD_NUMBER
+      amount: 4.0
+      equipmentSlotGroup: any
+  lootTable: ""
+  model: ""
+
+legendaryEntity:
+  attributes:
+    minecraft:generic.max_health:
+      key: "blobspawner:zombie_legendary_health"
+      operation: ADD_NUMBER
+      amount: 10.0
+      equipmentSlotGroup: any
+    minecraft:generic.attack_damage:
+      key: "blobspawner:zombie_legendary_damage"
+      operation: ADD_NUMBER
+      amount: 3.0
+      equipmentSlotGroup: any
+    minecraft:generic.movement_speed:
+      key: "blobspawner:zombie_legendary_speed"
+      operation: ADD_SCALAR
+      amount: 0.3
+      equipmentSlotGroup: any
+  lootTable: "zombie_legendary_loot"
+  model: ""

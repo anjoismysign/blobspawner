@@ -1,0 +1,16 @@
+# =============================================================================
+# BlobMobSpawner definition: "skeleton"
+# File path: plugins/BlobSpawner/mob_spawner/skeleton.yml
+#
+# This spawner pairs with mob/skeleton.yml (same identifier: "skeleton").
+# Skeletons spawn every 15–45 ticks, with up to 3 alive per block.
+#
+# After setup, right-click a spawner block with a skeleton spawn egg
+# to register the spawn location. The blocks list will be updated
+# automatically.
+# =============================================================================
+
+minDelay: 300
+maxDelay: 900
+maxCount: 3
+blocks: []

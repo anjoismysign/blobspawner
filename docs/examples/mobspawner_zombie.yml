@@ -1,0 +1,17 @@
+# =============================================================================
+# BlobMobSpawner definition: "zombie"
+# File path: plugins/BlobSpawner/mob_spawner/zombie.yml
+#
+# This spawner pairs with mob/zombie.yml (same identifier: "zombie").
+# It will spawn zombies at the recorded block locations every 10–30 ticks,
+# with a maximum of 5 zombies alive per spawner block.
+#
+# The 'blocks' list is managed automatically by right-clicking a spawner
+# block with a zombie spawn egg. Manual edits are possible but the
+# locations must be serialized via SerializationLib.serialize().
+# =============================================================================
+
+minDelay: 200
+maxDelay: 600
+maxCount: 5
+blocks: []
