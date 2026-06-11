@@ -1,6 +1,7 @@
 package io.github.anjoismysign.blobspawner.command;
 
 import io.github.anjoismysign.bloblib.api.BlobLibMessageAPI;
+import io.github.anjoismysign.bloblib.entities.message.BlobMessage;
 import io.github.anjoismysign.bloblib.utilities.PlayerUtil;
 import io.github.anjoismysign.blobspawner.BlobSpawner;
 import io.github.anjoismysign.blobspawner.util.Keys;
@@ -56,9 +57,16 @@ public enum BlobMobCmd {
                 return;
             }
             var persistentDataContainer = itemMeta.getPersistentDataContainer();
-            persistentDataContainer.set(Keys.BLOB_MOB_SPAWN_EGG.getNamespacedKey(), PersistentDataType.STRING, blobMobData.identifier());
+            String mobId = blobMobData.identifier();
+            persistentDataContainer.set(Keys.BLOB_MOB_SPAWN_EGG.getNamespacedKey(), PersistentDataType.STRING, mobId);
             itemStack.setItemMeta(itemMeta);
             PlayerUtil.giveItemToInventoryOrDrop(target, itemStack);
+            BlobMessage.by("BlobSpawner.Egg-Give-To-Others")
+                    .modder()
+                    .replace("%mobId%", mobId)
+                    .replace("%player%", target.getName())
+                    .get()
+                    .toCommandSender(commandSender);
         });
     }
 }

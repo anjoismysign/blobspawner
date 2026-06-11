@@ -1,0 +1,5 @@
+BlobSpawner:
+  Egg-Give-To-Others:
+    Type: CHAT
+    Message: '&7Successfully given a %mobId% egg to %player%'
+    BlobSound: System.Alert
