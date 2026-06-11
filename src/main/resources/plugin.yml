@@ -8,4 +8,4 @@ depend:
 authors: [ anjoismysign ]
 commands:
   blobmob:
-    description: blobmob
+    description: "Gives BlobMob spawn eggs. Usage: /blobmob egg give <player> <mobType>"
