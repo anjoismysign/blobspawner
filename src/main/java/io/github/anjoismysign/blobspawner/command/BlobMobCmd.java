@@ -26,6 +26,10 @@ public enum BlobMobCmd {
         Command egg = main.child("egg");
         Command give = egg.child("give");
         give.setParameters(players, blobMobIdentityManager);
+        /*
+         * When running (/blobmob egg give Notch scorpion)
+         * will give the user "Notch" a spawn egg that spawns "scorpion" BlobMobs.
+         */
         give.onExecute((permissionMessenger, args) -> {
             CommandSender commandSender = BukkitAdapter.getInstance().of(permissionMessenger);
             if (args.length < 2) {
