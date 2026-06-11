@@ -60,9 +60,6 @@ public final class BlobMobSpawner {
         mob.setPersistent(false);
         blobMobData.instantiate(mob, isLegendary);
         entities.add(blobMob);
-        if (!isLegendary) {
-            return;
-        }
         BlobMobSpawnEvent blobMobSpawnEvent = new BlobMobSpawnEvent(blobMob, this);
         Bukkit.getPluginManager().callEvent(blobMobSpawnEvent);
     }
