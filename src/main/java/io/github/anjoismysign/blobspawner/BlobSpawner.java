@@ -1,8 +1,8 @@
 package io.github.anjoismysign.blobspawner;
 
-import io.github.anjoismysign.bloblib.managers.BlobPlugin;
-import io.github.anjoismysign.bloblib.managers.PluginManager;
-import io.github.anjoismysign.bloblib.managers.asset.BukkitIdentityManager;
+import io.github.anjoismysign.bloblib.manager.BlobPlugin;
+import io.github.anjoismysign.bloblib.manager.PluginManager;
+import io.github.anjoismysign.bloblib.manager.asset.BukkitIdentityManager;
 import io.github.anjoismysign.blobspawner.command.BlobMobCmd;
 import io.github.anjoismysign.blobspawner.domain.BlobMobData;
 import io.github.anjoismysign.blobspawner.domain.BlobMobSpawnerData;

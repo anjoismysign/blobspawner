@@ -1,7 +1,7 @@
 package io.github.anjoismysign.blobspawner.service;
 
 import io.github.anjoismysign.bloblib.api.BlobLibLootAPI;
-import io.github.anjoismysign.bloblib.utilities.SerializationLib;
+import io.github.anjoismysign.bloblib.utility.SerializationLib;
 import io.github.anjoismysign.blobspawner.BlobSpawner;
 import io.github.anjoismysign.blobspawner.domain.BlobMob;
 import io.github.anjoismysign.blobspawner.domain.BlobMobData;
