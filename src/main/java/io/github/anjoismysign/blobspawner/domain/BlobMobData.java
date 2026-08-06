@@ -1,7 +1,7 @@
 package io.github.anjoismysign.blobspawner.domain;
 
 import com.destroystokyo.paper.entity.ai.MobGoals;
-import io.github.anjoismysign.bloblib.entities.AttributeModifierBean;
+import io.github.anjoismysign.bloblib.domain.AttributeModifierBean;
 import io.github.anjoismysign.blobspawner.BlobSpawner;
 import io.github.anjoismysign.blobspawner.goal.BlobMobGoal;
 import io.github.anjoismysign.blobspawner.goal.FollowerMobGoal;

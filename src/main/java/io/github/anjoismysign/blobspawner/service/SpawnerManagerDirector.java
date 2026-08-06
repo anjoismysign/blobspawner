@@ -1,6 +1,6 @@
 package io.github.anjoismysign.blobspawner.service;
 
-import io.github.anjoismysign.bloblib.entities.GenericManagerDirector;
+import io.github.anjoismysign.bloblib.manager.GenericManagerDirector;
 import io.github.anjoismysign.blobspawner.BlobSpawner;
 import org.jetbrains.annotations.NotNull;
 

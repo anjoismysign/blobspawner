@@ -1,6 +1,6 @@
 package io.github.anjoismysign.blobspawner.domain;
 
-import io.github.anjoismysign.bloblib.utilities.SerializationLib;
+import io.github.anjoismysign.bloblib.utility.SerializationLib;
 import io.github.anjoismysign.blobspawner.BlobSpawner;
 import io.github.anjoismysign.holoworld.asset.DataAsset;
 import io.github.anjoismysign.holoworld.asset.IdentityGeneration;

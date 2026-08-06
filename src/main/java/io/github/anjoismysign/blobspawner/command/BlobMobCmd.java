@@ -1,8 +1,8 @@
 package io.github.anjoismysign.blobspawner.command;
 
 import io.github.anjoismysign.bloblib.api.BlobLibMessageAPI;
-import io.github.anjoismysign.bloblib.entities.message.BlobMessage;
-import io.github.anjoismysign.bloblib.utilities.PlayerUtil;
+import io.github.anjoismysign.bloblib.message.BlobMessage;
+import io.github.anjoismysign.bloblib.utility.PlayerUtil;
 import io.github.anjoismysign.blobspawner.BlobSpawner;
 import io.github.anjoismysign.blobspawner.util.Keys;
 import io.github.anjoismysign.skeramidcommands.command.Command;
