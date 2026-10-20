@@ -74,7 +74,7 @@ public class BlobMobGoal implements Goal<@NotNull Mob> {
 
     @Override
     public boolean shouldStayActive() {
-        return enemy.isValid() && entity.getLocation().distanceSquared(this.enemy.getLocation()) >= awareDistance * awareDistance;
+        return enemy.isValid() && entity.getLocation().distanceSquared(this.enemy.getLocation()) <= awareDistance * awareDistance;
     }
 
     @Override
