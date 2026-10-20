@@ -66,7 +66,7 @@ public final class BlobMobSpawner {
 
     @Nullable
     public BlobMob getBlobMob(@NotNull UUID uuid) {
-        return entities.stream().filter(animal -> animal.getMob().getUniqueId().equals(uuid))
+        return entities.stream().filter(mob -> mob.getMob().getUniqueId().equals(uuid))
                 .findFirst()
                 .orElse(null);
     }
@@ -77,12 +77,11 @@ public final class BlobMobSpawner {
     }
 
     public void removeEntity(@NotNull UUID uuid, boolean removeUnderlyingMob) {
-        @Nullable var blobMob = entities.stream().filter(animal -> animal.getMob().getUniqueId().equals(uuid))
-                .findFirst()
-                .orElse(null);
+        @Nullable var blobMob = getBlobMob(uuid);
         if (blobMob == null) {
             return;
         }
+        entities.remove(blobMob);
         blobMob.setEntityTracker(null);
         if (removeUnderlyingMob) {
             blobMob.getMob().remove();
