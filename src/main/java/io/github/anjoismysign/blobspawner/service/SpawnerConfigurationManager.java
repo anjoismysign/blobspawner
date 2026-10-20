@@ -12,7 +12,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class SpawnerConfigurationManager extends SpawnerManager {
-    private static SpawnerConfiguration configuration;
+    private SpawnerConfiguration configuration;
 
     public SpawnerConfigurationManager(SpawnerManagerDirector managerDirector) {
         super(managerDirector);
@@ -23,18 +23,19 @@ public class SpawnerConfigurationManager extends SpawnerManager {
     public void reload() {
         BlobSpawner plugin = getPlugin();
         plugin.saveResource("config.yml", false);
+
         File configFile = new File(plugin.getDataFolder(), "config.yml");
-        Constructor constructor = new Constructor(SpawnerConfiguration.class, new LoaderOptions());
-        Yaml yaml = new Yaml(constructor);
+        Constructor configConstructor = new Constructor(SpawnerConfiguration.class, new LoaderOptions());
+        Yaml configYaml = new Yaml(configConstructor);
         try (FileInputStream inputStream = new FileInputStream(configFile)) {
-            configuration = yaml.load(inputStream);
+            configuration = configYaml.load(inputStream);
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
     }
 
     @NotNull
-    public static SpawnerConfiguration getConfiguration() {
+    public SpawnerConfiguration getConfiguration() {
         return configuration;
     }
 }

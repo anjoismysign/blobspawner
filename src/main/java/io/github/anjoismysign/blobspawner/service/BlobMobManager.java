@@ -20,7 +20,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityRemoveEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -55,6 +54,7 @@ public class BlobMobManager extends SpawnerManager implements Listener {
             spawner.getTask().task().cancel();
         }));
         blobMobs.clear();
+        spawners.clear();
         Bukkit.getScheduler().runTask(getPlugin(), () -> {
             BlobSpawner blobSpawner = BlobSpawner.getInstance();
             blobSpawner.getBlobMobSpawnerIdentityManager().forEach(spawnerData -> {
@@ -120,14 +120,6 @@ public class BlobMobManager extends SpawnerManager implements Listener {
         spawnerData.blocksReferences().add(SerializationLib.serialize(block.getLocation()));
         getPlugin().getBlobMobSpawnerIdentityManager().add(spawnerData.generation());
         block.setType(Material.AIR);
-    }
-
-    @EventHandler
-    public void cancelSpawn(CreatureSpawnEvent event) {
-        CreatureSpawnEvent.SpawnReason reason = event.getSpawnReason();
-        if (reason == CreatureSpawnEvent.SpawnReason.CUSTOM || reason == CreatureSpawnEvent.SpawnReason.SPAWNER_EGG)
-            return;
-        event.setCancelled(true);
     }
 
     @EventHandler

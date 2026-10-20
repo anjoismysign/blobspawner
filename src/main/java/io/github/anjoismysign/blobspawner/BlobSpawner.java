@@ -7,6 +7,7 @@ import io.github.anjoismysign.blobspawner.command.BlobMobCmd;
 import io.github.anjoismysign.blobspawner.domain.BlobMobData;
 import io.github.anjoismysign.blobspawner.domain.BlobMobSpawnerData;
 import io.github.anjoismysign.blobspawner.service.SpawnerManagerDirector;
+import org.jspecify.annotations.NonNull;
 
 public final class BlobSpawner extends BlobPlugin {
     private static BlobSpawner INSTANCE;
@@ -30,7 +31,7 @@ public final class BlobSpawner extends BlobPlugin {
         BlobMobCmd.INSTANCE.initialize();
     }
 
-    public SpawnerManagerDirector getManagerDirector() {
+    public @NonNull SpawnerManagerDirector getManagerDirector() {
         return director;
     }
 

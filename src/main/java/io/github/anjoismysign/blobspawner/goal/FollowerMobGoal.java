@@ -4,11 +4,11 @@ import com.destroystokyo.paper.entity.ai.Goal;
 import com.destroystokyo.paper.entity.ai.GoalKey;
 import com.destroystokyo.paper.entity.ai.GoalType;
 import io.github.anjoismysign.blobspawner.BlobSpawner;
+import io.github.anjoismysign.blobspawner.domain.BlobMob;
 import io.github.anjoismysign.blobspawner.service.BlobMobManager;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,13 +40,14 @@ public class FollowerMobGoal implements Goal<@NotNull Mob> {
             if (uuid.equals(this.entity.getUniqueId())) {
                 continue;
             }
-            @Nullable LivingEntity livingEntity = BlobMobManager.getSpawned(uuid);
-            if (!(livingEntity instanceof Mob mob)) {
+            @Nullable BlobMob legendary = BlobMobManager.getSpawnedBlobMob(uuid);
+            if (legendary == null || !legendary.isLegendary()) {
                 continue;
             }
-            if (location.distanceSquared(mob.getLocation()) < awareDistance * awareDistance) {
-                this.legendaryEntity = mob;
+            if (!isWithinAwareDistance(entity)) {
+                continue;
             }
+            this.legendaryEntity = legendary.getMob();
             return true;
         }
         return false;
@@ -54,7 +55,14 @@ public class FollowerMobGoal implements Goal<@NotNull Mob> {
 
     @Override
     public boolean shouldStayActive() {
-        return legendaryEntity.getLocation().distanceSquared(entity.getLocation()) <= awareDistance * awareDistance;
+        return legendaryEntity.isValid() && isWithinAwareDistance(legendaryEntity);
+    }
+
+    private boolean isWithinAwareDistance(@NotNull Entity other) {
+        if (!other.getWorld().equals(entity.getWorld())) {
+            return false;
+        }
+        return entity.getLocation().distanceSquared(other.getLocation()) <= awareDistance * awareDistance;
     }
 
     @Override

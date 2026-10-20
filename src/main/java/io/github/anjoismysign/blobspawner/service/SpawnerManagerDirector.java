@@ -2,15 +2,15 @@ package io.github.anjoismysign.blobspawner.service;
 
 import io.github.anjoismysign.bloblib.manager.GenericManagerDirector;
 import io.github.anjoismysign.blobspawner.BlobSpawner;
+import io.github.anjoismysign.blobspawner.manager.SpawnerListenerManager;
 import org.jetbrains.annotations.NotNull;
 
 public class SpawnerManagerDirector extends GenericManagerDirector<BlobSpawner> {
     public SpawnerManagerDirector(BlobSpawner plugin) {
         super(plugin);
-        addManager("ConfigurationManager",
-                new SpawnerConfigurationManager(this));
-        addManager("BlobMobManager",
-                new BlobMobManager(this));
+        addManager("ConfigurationManager", new SpawnerConfigurationManager(this));
+        addManager("ListenerManager", new SpawnerListenerManager(this));
+        addManager("BlobMobManager", new BlobMobManager(this));
     }
 
     /**
@@ -19,6 +19,7 @@ public class SpawnerManagerDirector extends GenericManagerDirector<BlobSpawner> 
     @Override
     public void reload() {
         getConfigurationManager().reload();
+        getListenerManager().reload();
         getBlobMobManager().reload();
     }
 
@@ -29,6 +30,11 @@ public class SpawnerManagerDirector extends GenericManagerDirector<BlobSpawner> 
     @NotNull
     public final SpawnerConfigurationManager getConfigurationManager() {
         return getManager("ConfigurationManager", SpawnerConfigurationManager.class);
+    }
+
+    @NotNull
+    public final SpawnerListenerManager getListenerManager(){
+        return getManager("ListenerManager", SpawnerListenerManager.class);
     }
 
     @NotNull

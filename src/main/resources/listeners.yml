@@ -1,0 +1,3 @@
+# Cancels every creature spawn on the server whose reason isn't CUSTOM or SPAWNER_EGG
+# (natural spawns, vanilla spawners, breeding, commands, ...). Set to false to leave them alone.
+cancelNaturalSpawns: true

@@ -1,9 +1,13 @@
 package io.github.anjoismysign.blobspawner.configuration;
 
-public class SpawnerConfiguration {
-    private boolean tinyDebug;
+import io.github.anjoismysign.blobspawner.BlobSpawner;
 
-    SpawnerConfiguration(){}
+public class SpawnerConfiguration {
+    public static SpawnerConfiguration getInstance(){
+        return BlobSpawner.getInstance().getManagerDirector().getConfigurationManager().getConfiguration();
+    }
+
+    private boolean tinyDebug;
 
     public boolean isTinyDebug() {
         return tinyDebug;
@@ -12,4 +16,5 @@ public class SpawnerConfiguration {
     public void setTinyDebug(boolean tinyDebug) {
         this.tinyDebug = tinyDebug;
     }
+
 }
