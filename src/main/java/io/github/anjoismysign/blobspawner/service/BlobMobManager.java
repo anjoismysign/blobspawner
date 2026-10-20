@@ -8,6 +8,7 @@ import io.github.anjoismysign.blobspawner.domain.BlobMobData;
 import io.github.anjoismysign.blobspawner.domain.BlobMobSpawner;
 import io.github.anjoismysign.blobspawner.domain.BlobMobSpawnerData;
 import io.github.anjoismysign.blobspawner.event.BlobMobDeathEvent;
+import io.github.anjoismysign.blobspawner.event.BlobMobSpawnEvent;
 import io.github.anjoismysign.blobspawner.util.Keys;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,6 +17,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -32,12 +34,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 public class BlobMobManager extends SpawnerManager implements Listener {
     private static BlobMobManager instance;
     private final Map<Block, BlobMobSpawner> spawners = new HashMap<>();
+    private final Map<UUID, BlobMob> blobMobs = new HashMap<>();
 
     public BlobMobManager(SpawnerManagerDirector managerDirector) {
         super(managerDirector);
@@ -52,6 +54,7 @@ public class BlobMobManager extends SpawnerManager implements Listener {
             spawner.killAll();
             spawner.getTask().task().cancel();
         }));
+        blobMobs.clear();
         Bukkit.getScheduler().runTask(getPlugin(), () -> {
             BlobSpawner blobSpawner = BlobSpawner.getInstance();
             blobSpawner.getBlobMobSpawnerIdentityManager().forEach(spawnerData -> {
@@ -63,19 +66,21 @@ public class BlobMobManager extends SpawnerManager implements Listener {
         });
     }
 
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void spawn(BlobMobSpawnEvent event) {
+        BlobMob blobMob = event.getBlobMob();
+        blobMobs.put(blobMob.getMob().getUniqueId(), blobMob);
+    }
+
     @EventHandler
     public void remove(EntityRemoveEvent event) {
         Entity entity = event.getEntity();
         UUID uniqueId = entity.getUniqueId();
-        @Nullable BlobMobSpawner belonging = spawners.values()
-                .stream()
-                .filter(spawner -> spawner.isTrackingEntity(uniqueId))
-                .findFirst()
-                .orElse(null);
-        if (belonging == null) {
+        @Nullable BlobMob blobMob = blobMobs.remove(uniqueId);
+        if (blobMob == null) {
             return;
         }
-        belonging.removeEntity(uniqueId, false);
+        blobMob.getSpawner().removeEntity(uniqueId, false);
     }
 
     @EventHandler
@@ -147,12 +152,7 @@ public class BlobMobManager extends SpawnerManager implements Listener {
 
     @Nullable
     public BlobMob getBlobMobByUUID(@NotNull UUID uuid) {
-        return spawners.values()
-                .stream()
-                .map(spawner -> spawner.getBlobMob(uuid))
-                .filter(Objects::nonNull)
-                .findFirst()
-                .orElse(null);
+        return blobMobs.get(uuid);
     }
 
     @Nullable
@@ -165,5 +165,13 @@ public class BlobMobManager extends SpawnerManager implements Listener {
             return null;
         }
         return blobMob.getMob();
+    }
+
+    @Nullable
+    public static BlobMob getSpawnedBlobMob(@NotNull UUID uuid) {
+        if (instance == null) {
+            return null;
+        }
+        return instance.getBlobMobByUUID(uuid);
     }
 }

@@ -4,12 +4,11 @@ import com.destroystokyo.paper.entity.ai.Goal;
 import com.destroystokyo.paper.entity.ai.GoalKey;
 import com.destroystokyo.paper.entity.ai.GoalType;
 import io.github.anjoismysign.blobspawner.BlobSpawner;
+import io.github.anjoismysign.blobspawner.domain.BlobMob;
 import io.github.anjoismysign.blobspawner.service.BlobMobManager;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Mob;
 import org.bukkit.entity.Player;
@@ -17,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumSet;
-import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
 
@@ -39,7 +37,17 @@ public class BlobMobGoal implements Goal<@NotNull Mob> {
     @Override
     public boolean shouldActivate() {
         Location location = entity.getLocation();
+        @Nullable Player targetPlayer = null;
         for (Entity entity : location.getNearbyEntities(awareDistance, awareDistance, awareDistance)) {
+            if (!isWithinAwareDistance(entity)) {
+                continue;
+            }
+            if (entity instanceof Player player) {
+                if (targetPlayer == null && isTargetablePlayer(player)) {
+                    targetPlayer = player;
+                }
+                continue;
+            }
             if (entity.getType() != this.entity.getType()) {
                 continue;
             }
@@ -47,34 +55,41 @@ public class BlobMobGoal implements Goal<@NotNull Mob> {
             if (uuid.equals(this.entity.getUniqueId())) {
                 continue;
             }
-            @Nullable LivingEntity legendary = BlobMobManager.getSpawned(uuid);
-            if (legendary == null) {
+            @Nullable BlobMob legendary = BlobMobManager.getSpawnedBlobMob(uuid);
+            if (legendary == null || !legendary.isLegendary()) {
                 continue;
             }
-            enemy = legendary;
+            // rival legendaries take priority over players
+            enemy = legendary.getMob();
             return true;
         }
-        if (enemy == null || !enemy.isValid())
-            for (Entity entity : location.getNearbyEntities(awareDistance, awareDistance, awareDistance)) {
-                if (entity.getType() != EntityType.PLAYER) {
-                    continue;
-                }
-                Player player = Objects.requireNonNull(Bukkit.getPlayer(entity.getUniqueId()), "Entity#getUniqueId doesn't point to a valid player");
-                if (player.getGameMode().isInvulnerable()) {
-                    continue;
-                }
-                if (player.isInvulnerable()) {
-                    continue;
-                }
-                enemy = player;
-                return true;
-            }
-        return false;
+        if (targetPlayer == null) {
+            return false;
+        }
+        enemy = targetPlayer;
+        return true;
+    }
+
+    private boolean isTargetablePlayer(@NotNull Player player) {
+        if (player.hasMetadata("NPC")) {
+            return false;
+        }
+        if (player.getGameMode().isInvulnerable()) {
+            return false;
+        }
+        return !player.isInvulnerable();
     }
 
     @Override
     public boolean shouldStayActive() {
-        return enemy.isValid() && entity.getLocation().distanceSquared(this.enemy.getLocation()) <= awareDistance * awareDistance;
+        return enemy.isValid() && isWithinAwareDistance(enemy);
+    }
+
+    private boolean isWithinAwareDistance(@NotNull Entity other) {
+        if (!other.getWorld().equals(entity.getWorld())) {
+            return false;
+        }
+        return entity.getLocation().distanceSquared(other.getLocation()) <= awareDistance * awareDistance;
     }
 
     @Override
@@ -106,7 +121,7 @@ public class BlobMobGoal implements Goal<@NotNull Mob> {
     @Override
     public @NotNull
     EnumSet<GoalType> getTypes() {
-        return EnumSet.of(GoalType.TARGET);
+        return EnumSet.of(GoalType.TARGET, GoalType.MOVE);
     }
 
     private int generateCooldown() {
